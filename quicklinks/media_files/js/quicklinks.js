@@ -66,7 +66,7 @@ var GroupCollection= Backbone.Collection.extend({
     comparator: function(group){
         return group.get("order");
     },
-    url:"/groupedlinks/"
+    url:"/quicklinks/"
 });
 
 var GroupView = Backbone.View.extend({
