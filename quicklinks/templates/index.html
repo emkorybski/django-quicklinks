@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Hello, world!{% endblock title %}
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/media_files/css/quicklinks.css"/>
+</head>
+<body>
+{% block body %}
+
+{% if listed_groups %}
+    <div id="quicklinks_wrap">
+
+            <h3>Quick Links</h3>
+            <a href="#"> Show Links</a>
+
+                <ul id="first">
+                    {% for group in listed_groups %}
+                        <ul id="second">
+                            <strong>{{ group.order_int }}.&nbsp;{{ group.title }}</strong>
+                        {% if listed_links %}
+                            {% for links in listed_links %}
+                                {% if links.quicklinkgroup_id == group.id %}
+                                    <li><a href="{{ links.url }}">{{ links.title }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        </ul>
+                    {% endfor %}
+                </ul>
+
+
+
+    </div>
+{% else %}
+    <p>No quick links available.</p>
+{% endif %}
+
+
+{% endblock body %}
+
+<!--
+<script type="text/javascript" src="media_files/jquery-1.9.1.min.js"></script>
+
+<script type="text/javascript" src="media_files/jquery.ui.js"></script>
+
+<script type="text/javascript" src="media_files/effects.core.js"></script>
+
+
+<script type="text/javascript" src="media_files/json2.js"></script>
+<script type="text/javascript" src="media_files/underscore.js"></script>
+<script type="text/javascript" src="media_files/backbone-min.js"></script>
+
+<script type="text/javascript" src="media_files/json_dump_handle.js"></script>
+-->
+
+
+</body>
+</html>
+
+
+
+
+
