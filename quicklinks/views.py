@@ -6,21 +6,26 @@ from quicklinks.models import QuickLinkGroup, QuickLink
 from django.template import Context, loader
 import simplejson as json
 from .lib.flexible_json import json_response_from
+from django.template import Context, Template
 
 
-def index(request):
-    #listed_groups = QuickLinkGroup.objects.all().select_related('quicklinkgroup_id').order_by('id')
+def indexAlt(request):
+
     listed_groups = QuickLinkGroup.objects.all().order_by('id')#.values('title', 'group__title', 'group__url')
     listed_links = QuickLink.objects.all().select_related('quicklinkgroup_id')
-    #list_groups = list(listed_groups)
-    template = loader.get_template('index.html')
+    #template = loader.get_template("index.html")
+
     context = {
-        'listed_groups' : listed_groups,
-        'listed_links' : listed_links
+
+        "listed_groups": listed_groups,
+        "listed_links": listed_links
     }
 
     return render(request, 'index.html', context)
 
+
+def home(request):
+    return render_to_response(u'default.html')
 
 
 def links(request):

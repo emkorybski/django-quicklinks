@@ -1,18 +1,19 @@
+{% load quicklinks_extras %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>{% block title %}Quick links app{% endblock title %}
     </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="/media_files/css/quicklinks.css"/>
-</head>
+
 <body>
 {% block body %}
 
+    {% quicklink_group %}
 
 {% endblock body %}
 
-
+<!--
 <script type="text/javascript" src="media_files/lib/jquery-1.9.1.min.js"></script>
 
 <script type="text/javascript" src="media_files/lib/jquery.ui.js"></script>
@@ -25,7 +26,7 @@
 <script type="text/javascript" src="media_files/lib/backbone-min.js"></script>
 
 <script type="text/javascript" src="media_files/quicklinks.js"></script>
-
+-->
 
 
 </body>

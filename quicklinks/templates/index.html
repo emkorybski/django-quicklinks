@@ -1,34 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{% block title %}Hello, world!{% endblock title %}
-    </title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="/media_files/css/quicklinks.css"/>
-</head>
-<body>
-{% block body %}
+{% load quicklinks_extras %}
+
 
 {% if listed_groups %}
     <div id="quicklinks_wrap">
 
-            <h3>Quick Links</h3>
-            <a href="#"> Show Links</a>
+        <h3>Quick Links</h3>
+        <a href="#"> Show Links</a>
 
-                <ul id="first">
-                    {% for group in listed_groups %}
-                        <ul id="second">
-                            <strong>{{ group.order_int }}.&nbsp;{{ group.title }}</strong>
-                        {% if listed_links %}
-                            {% for links in listed_links %}
-                                {% if links.quicklinkgroup_id == group.id %}
-                                    <li><a href="{{ links.url }}">{{ links.title }}</a></li>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                        </ul>
-                    {% endfor %}
+        <ul id="first">
+            {% for group in listed_groups %}
+                <ul id="second">
+                    <strong>{{ group.order_int }}.&nbsp;{{ group.title }}</strong>
+                    {% if listed_links %}
+                        {% for links in listed_links %}
+                            {% if links.quicklinkgroup_id == group.id %}
+                                <li><a href="{{ links.url }}">{{ links.title }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </ul>
+            {% endfor %}
+        </ul>
 
 
 
@@ -37,8 +29,6 @@
     <p>No quick links available.</p>
 {% endif %}
 
-
-{% endblock body %}
 
 <!--
 <script type="text/javascript" src="media_files/lib/jquery-1.9.1.min.js"></script>
@@ -56,8 +46,6 @@
 -->
 
 
-</body>
-</html>
 
 
 
