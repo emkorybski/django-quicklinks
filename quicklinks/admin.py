@@ -24,5 +24,5 @@ class QuickLinkGroupInline(SortableAdmin):
     inlines = (QuickLinkInline,)
 
 admin.site.register(QuickLinkGroup,QuickLinkGroupInline)
-admin.site.register(User)
-admin.site.register(Group)
+#admin.site.register(User)
+#admin.site.register(Group)
