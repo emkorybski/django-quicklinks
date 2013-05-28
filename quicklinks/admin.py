@@ -8,8 +8,8 @@ from adminsortable.admin import SortableAdmin
 from adminsortable.admin import SortableTabularInline
 
 #admin.site.register(QuickLinkGroup)
-admin.site.unregister(User)
-admin.site.unregister(Group)
+#admin.site.unregister(User)
+#admin.site.unregister(Group)
 
 
 #class QuickLinkInline(admin.TabularInline):
@@ -24,3 +24,5 @@ class QuickLinkGroupInline(SortableAdmin):
     inlines = (QuickLinkInline,)
 
 admin.site.register(QuickLinkGroup,QuickLinkGroupInline)
+admin.site.register(User)
+admin.site.register(Group)
