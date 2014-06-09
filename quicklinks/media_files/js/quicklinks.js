@@ -11,7 +11,7 @@ window.LinkRouter = Backbone.Router.extend({
         this.processCollection = new GroupCollection();
         this.processCollection.fetch({
             error:function () {
-                console.log('error getting links');
+
                  },
             success:function () {
                 callback();
@@ -32,6 +32,7 @@ window.LinkRouter = Backbone.Router.extend({
     }
 });
 
+
 // MODELS & COLLECTIONS
 
 var Link = Backbone.Model.extend({
@@ -51,7 +52,7 @@ var LinkCollection= Backbone.Collection.extend({
 var Group = Backbone.Model.extend({
     defaults: {
         title:'',
-        order:''
+        order_int:''
     },
     initialize: function(){
         this.set('links', new LinkCollection(this.get('links')));
@@ -64,14 +65,14 @@ var Group = Backbone.Model.extend({
 var GroupCollection= Backbone.Collection.extend({
     model: Group,
     comparator: function(group){
-        return group.get("order");
+        return group.get("order_int");
     },
     url:"/quicklinks/quicklinks/"
 });
 
 var GroupView = Backbone.View.extend({
     tagName:'li',
-    template: _.template('<strong><%= order_int %>. <%= title %> tab</strong>'),  //each group will be displayed in this div,,
+    template: _.template('<strong><%= order_int %>.' + gettext('<%= title %>') + ' tab</strong>'),  //each group will be displayed in this div,,
     render: function(){
         $(this.el).html(this.template(this.model.toJSON()));
         var linkcollectionView = new LinkCollectionView({collection: this.model.get('links') });
@@ -94,7 +95,7 @@ var GroupCollectionView = Backbone.View.extend({
 
                 $(this.groups_ul).css({'height':$(window).height() - 210, 'width':250}).animate({
 
-                    marginLeft:-8
+                    marginLeft:-3
 
                 }).show();
 
@@ -117,25 +118,31 @@ var GroupCollectionView = Backbone.View.extend({
     render: function(){
         var self = this;
         //$(this.el).html(this.template());
-        $(self.el).html('<div><h3>Quick Links</h3><button id="quicklinks_button">Show Links</button></div>');
-        this.groups_ul = $('<ul></ul>');
-        $(this.el).append(this.groups_ul);
-        $(this.groups_ul).hide();
-        self.collection.each(function(group){ // handles each Group model
 
-            var groupView = new GroupView({model:group});
+        if(self.collection.size() > 0)
+        {
+            $(self.el).html('<div><h3>' + gettext('Quick Links') +'</h3><button id="quicklinks_button" class="btn">' + gettext('Show Links') + '</button></div>');
+            this.groups_ul = $('<ul></ul>');
+            $(this.el).append(this.groups_ul);
+            $(this.groups_ul).hide();
+            self.collection.each(function(group){ // handles each Group model
 
-            $(self.groups_ul).append(groupView.render().el);
+                var groupView = new GroupView({model:group});
 
-        });
-        return this;
+                $(self.groups_ul).append(groupView.render().el);
+
+            });
+            return this;
+        }else{
+            return '';
+        }
     }
 
 });
 
 var LinkView = Backbone.View.extend({
     tagName:'li',
-    template: _.template('<a href="<%= url %>"><%= title %></a>'),  //each group will be displayed in this div,,
+    template: _.template('<a href="<%= url %>">' + gettext('<%= title %>') + '</a>'),  //each group will be displayed in this div,,
     render: function(){
         var self = this;
         $(this.el).html(this.template(this.model.toJSON()));
@@ -149,7 +156,7 @@ var LinkCollectionView = Backbone.View.extend({
     tagName:'ul',
     render: function(){
         var self = this;
-        //console.log(self.collection);
+
         self.collection.each(function(link){ // handles each Link model
 
             var linkView = new LinkView({model:link});
@@ -162,65 +169,18 @@ var LinkCollectionView = Backbone.View.extend({
 });
 
 
-// BACKBONE VIEWS
-
-//var get_link_groups = new Link_groups();
-
-/*
-
-var FrontView = Backbone.View.extend({
-
-    //template: _.template('<div class="link_group"></div>'),  //each group will be displayed in this div
-    el: jQuery('#quicklinks_wrapper'),
-
-
-    initialize: function () {
-        var self=this;
-        self.processCollection = new GroupCollection();
-        self.processCollection.fetch({
-            error:function () {
-
-            },
-            success:function () {
-                //var LinkViewTemplate = new LinkView();
-                //var GroupViewTemplate = new GroupView();
-                console.log(self.processCollection);
-                self.processCollection.each(function(group){ // handles each Group model
-
-                    //console.log(group.get('title'));
-                    group.get('links').each(function(link){
-
-                        //console.log(link.get('url'));
-                    });
-                });
-            }});
-
-
-
-
-    },
-
-
-        render: function () {
-
-            _.each(new GroupCollection().fetch(),
-                function (t) {
-                    jQuery(this.el).append(new GroupView({ model: t }).render());
-                });
-        }
-
-
-
-});
-
-*/
-
 // INIT IN THE ROUTES
 
-var router = new window.LinkRouter();
-Backbone.history.start();
+var viewportWidth = $(window).width();
 
-router.navigate('', {trigger:true});
-
+var allowedWidth = viewportWidth - 988;
 
 
+if(allowedWidth > 500){
+
+    var router = new window.LinkRouter();
+    //We won't use the normal Backbone.history.start here as there may be other backbone apps on the page
+    //Backbone.history.start();
+    //router.navigate('', {trigger:true});
+    router.index();
+}
